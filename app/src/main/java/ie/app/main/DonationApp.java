@@ -18,6 +18,7 @@ public class DonationApp extends Application
         if (!targetAchieved)
         {
             donations.add(donation);
+//            dbManager.add(donation);
             totalDonated += donation.amount;
         }
         else

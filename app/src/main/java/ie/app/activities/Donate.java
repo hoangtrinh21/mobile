@@ -71,21 +71,20 @@ public class Donate extends Base {
     public void donateButtonPressed (View view) {
         String method = paymentMethod.getCheckedRadioButtonId() ==
                 R.id.PayPal ? "PayPal" : "Direct";
-        int donatedAmount = amountPicker.getValue();
-        if (donatedAmount == 0)
-        {
-            String text = amountText.getText().toString();
-            if (!text.equals(""))
-                donatedAmount = Integer.parseInt(text);
+        int donatedAmount;
+        String text = amountText.getText().toString();
+        if (!text.equals("")) {
+            donatedAmount = Integer.parseInt(text);
+            amountPicker.setValue(0);
+        } else {
+            donatedAmount = amountPicker.getValue();
         }
-        if (donatedAmount > 0)
-        {
-            Donation newDonation = new Donation(String.valueOf(app.donations.size()), donatedAmount, method, 0);
+            Donation newDonation = new Donation(String.valueOf(app.donations.size()),
+                    donatedAmount, method, 0);
             new InsertTask(this).execute("/donations", newDonation);
             progressBar.setProgress(app.totalDonated);
             String totalDonatedStr = "$" + app.totalDonated;
             amountTotal.setText(totalDonatedStr);
-        }
     }
 
     private class InsertTask extends AsyncTask<Object, Void, String> {
@@ -120,6 +119,7 @@ public class Donate extends Base {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             new GetAllTask(Donate.this).execute("/donations");
+
             if (dialog.isShowing())
                 dialog.dismiss();
         }
@@ -197,6 +197,7 @@ public class Donate extends Base {
             app.totalDonated = 0;
             progressBar.setProgress(app.totalDonated);
             amountTotal.setText("$" + app.totalDonated);
+            amountText.setText("");
             if (dialog.isShowing())
                 dialog.dismiss();
         }
@@ -229,6 +230,9 @@ public class Donate extends Base {
         });
         AlertDialog alert = builder.create();
         alert.show();
+        amountPicker.setValue(0);
+        amountText.setText("");
+//        app.dbManager.reset();
     }
 
 }

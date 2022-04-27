@@ -14,7 +14,7 @@ public class Rest {
 	private static URL 					url;
 
 	private static final String hostURL = "http://donationweb-4-0.herokuapp.com";
-	private static final String LocalhostURL = "http://192.168.30.107:30000";
+	private static final String LocalhostURL = "http://172.18.5.44:8000/adopt/hoangt";
 	
 
 	public static void setup(String request) {
