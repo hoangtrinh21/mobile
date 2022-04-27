@@ -36,12 +36,12 @@ public class APIDonation {
 
         Spark.post("/donations", (request, response) -> {
             Donation donation = new Gson().fromJson(request.body(), Donation.class);
+            donationList.add(donation);
             return "DONE!";
         });
 
         Spark.delete("/donations", (request, response) -> {
             donationList.clear();
-            System.out.println(donationList);
             return "DONE!";
         });
     }
